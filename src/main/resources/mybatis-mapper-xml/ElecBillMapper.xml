@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="tech.electricity.electricitybillingsystem.dao.ElecBillDao">
+	<resultMap id="BillList"
+		type="tech.electricity.electricitybillingsystem.model.ElecBillModel">
+		<result column="bill_id" property="billId" />
+		<result column="user_id" property="userId" />
+		<result column="bill_date" property="billDate" />
+		<result column="bill_amount" property="billAmount" />
+		<result column="payment_status" property="paymentStatus" />
+	</resultMap>
+	<select id="findAll" resultMap="BillList">
+		select bill_id, user_id,
+		bill_date, bill_amount,
+		payment_status from elec_bill
+	</select>
+
+
+	<select id="findbillIdNextVal" resultType="java.lang.Long">
+		 SELECT nextVal('elec_bill_bill_id_seq')
+	</select>
+	<select id="findByBillId" resultMap="BillList"
+		parameterType="java.lang.Long">
+		select bill_id, user_id, bill_date, bill_amount,
+		payment_status from elec_bill WHERE bill_id = #{billId}
+	</select>
+	<select id="findByUserId" resultMap="BillList"
+		parameterType="java.lang.Long">
+		select bill_id, user_id, bill_date,
+		bill_amount,payment_status from elec_bill WHERE user_id = #{userId}
+	</select>
+
+
+	<insert id="insert">
+		INSERT INTO elec_bill(bill_id, user_id,
+		bill_date,bill_amount,payment_status)
+		VALUES (#{billId}, #{userId},
+		#{billDate}, #{billAmount},#{paymentStatus})
+	</insert>
+
+	<delete id="deleteByBillId" parameterType="java.lang.Long">
+		DELETE
+		FROM elec_bill
+		WHERE bill_id = #{billId}
+	</delete>
+	<delete id="deleteBillByUserId" parameterType="java.lang.Long">
+		DELETE
+		FROM
+		elec_bill
+		WHERE user_id = #{userId}
+	</delete>
+	<update id="updateBill">
+		Update elec_bill set bill_date=#{billDate},
+		bill_amount=#{billAmount}, payment_status=#{paymentStatus} where
+		bill_id=#{billId}
+	</update>
+</mapper>
+
+    

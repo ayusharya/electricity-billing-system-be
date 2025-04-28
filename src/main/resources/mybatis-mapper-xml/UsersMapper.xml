@@ -1,0 +1,55 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="tech.electricity.electricitybillingsystem.dao.UsersDao">
+	<resultMap id="UsersList"
+		type="tech.electricity.electricitybillingsystem.model.UserModel">
+		<result column="user_id" property="userid" />
+		<result column="user_name" property="userName" />
+		<result column="user_role" property="userRole" />
+		<result column="user_password" property="userPassword" />
+		<result column="user_number" property="userNumber" />
+	</resultMap>
+	<select id="findAll" resultMap="UsersList">
+		select user_id, user_name,
+		user_role, user_password, user_number
+		from public.users
+	</select>
+
+	<select id="findById" resultMap="UsersList"
+		parameterType="java.lang.Long">
+		SELECT * FROM public.users
+		WHERE user_id = #{userid}
+	</select>
+	<select id="loginByIdPass" resultMap="UsersList"
+		parameterType="tech.electricity.electricitybillingsystem.model.UserModel">
+		select user_id, user_name,user_role,user_number, 
+		user_password from public.users  WHERE user_id=#{userid} and user_password=#{userPassword}
+	</select>
+	
+	<select id="findUserIdNextVal" resultType="java.lang.Long">
+		 SELECT nextVal('users_user_id_seq')
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		DELETE
+		FROM public.users
+		WHERE user_id = #{userid}
+	</delete>
+
+	<insert id="insert">
+		INSERT INTO public.users(user_id, user_name,
+		user_role,user_password,user_number)
+		VALUES (#{userid}, #{userName},
+		#{userRole}, #{userPassword},#{userNumber})
+	</insert>
+
+	<update id="update">
+		Update public.users set user_name=#{userName},
+		user_role=#{userRole}, user_password=#{userPassword},
+		user_number=#{userNumber} where user_id=#{userid}
+	</update>
+	
+</mapper>
