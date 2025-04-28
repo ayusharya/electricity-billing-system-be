@@ -72,6 +72,7 @@ public class ElecBillServiceImpl implements ElecBillService {
 		int count = ebillDao.deleteByBillId(id);
 		if (count > 0) {
 			System.out.println("deleted successfully ");
+			System.out.println("Git Commit");
 		} else {
 			throw new DataNotFounException("Bill not found with the id : " + id);
 		}
